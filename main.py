@@ -6,13 +6,30 @@ import queue as Q
 
 
 def heuristic_func(goal, child):
-    return 1
+    goal_str = goal.get_situation()
+    goal_x = goal_str[0:1]
+    goal_y = goal_str[2:3]
+
+    child_str = child.get_situation()
+    child_x = child_str[0:1]
+    child_y = child_str[2:3]
+
+    boat_capacity = 5
+
+    dx = child_x - goal_x
+    dy = child_y - goal_y
+    return (dx + dy) / boat_capacity
 
 
 class Node:
     def __init__(self, States, priority):
-        self.States = States
+
+        state_str = States.situation
+        self.state_str = state_str
         self.priority = priority
+
+    def __str__(self):
+        return self.state_str
 
 
 class PriorityQueue:
@@ -66,17 +83,18 @@ def a_star(root, goal):
     while not queue.empty():
         n = queue.pop()
         n_state = n.States
-        print(n_state)
+        # print(n_state)
+        print(n)
         #print("nstate str:", str(n_state.get_situation()))
         print("goal state str:", str(goal.get_situation()))
 
-        #SU ANKI STATE'LE GOAL STATE AYNIYSA DURMALI
+        # SU ANKI STATE'LE GOAL STATE AYNIYSA DURMALI
 
         # if str(n_state) == str(goal.get_situation()):
         #     break
 
-        #BURADAN SONRASI CALISIYOR AMA COK UZUN DONUYO DURMADIGI ICIN O YUZDEN COMMENTLI ESAS
-        #PROBLEM BURANIN USTUNDE
+        # BURADAN SONRASI CALISIYOR AMA COK UZUN DONUYO DURMADIGI ICIN O YUZDEN COMMENTLI ESAS
+        # PROBLEM BURANIN USTUNDE
 
         # for child in n_state.children:
         #     new_weight = path_weights[n_state] + 1  # every level costs 1
