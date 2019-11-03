@@ -70,8 +70,13 @@ def a_star(root, goal):
         #print("nstate str:", str(n_state.get_situation()))
         print("goal state str:", str(goal.get_situation()))
 
+        #SU ANKI STATE'LE GOAL STATE AYNIYSA DURMALI
+
         # if str(n_state) == str(goal.get_situation()):
         #     break
+
+        #BURADAN SONRASI CALISIYOR AMA COK UZUN DONUYO DURMADIGI ICIN O YUZDEN COMMENTLI ESAS
+        #PROBLEM BURANIN USTUNDE
 
         # for child in n_state.children:
         #     new_weight = path_weights[n_state] + 1  # every level costs 1
