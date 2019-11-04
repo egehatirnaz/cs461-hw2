@@ -20,13 +20,6 @@ class States:
         for p in path:
             self.path.append(p)
 
-    """
-	def __init__(self, situation):
-		self.x = situation[0:1]
-		self.y = situation[2:3]
-		self.b = situation[5:]
-	"""
-
     def update_situation(self, x, y, b):
         self.path.append([self.x, self.y, self.b])
         self.x = x

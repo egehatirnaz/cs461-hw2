@@ -1,3 +1,14 @@
+"""
+	CS461 Fall 2019 Homework 2
+	Authors: Faruk Ege Hatırnaz
+			 Shabnam Sadigova
+			 Sıla İnci
+			 Dilara Halavurt
+			 Doğukan Aydın
+
+	Date: 	 07.11.2019
+"""
+
 from anytree import Node, RenderTree, NodeMixin
 from anytree.exporter import DotExporter
 from States import States
