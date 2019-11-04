@@ -10,21 +10,21 @@ def heuristic_func(goal, child):
     goal_x = goal_str[0:1]
     goal_y = goal_str[2:3]
 
-    child_str = child.get_situation()
+    child_str = child.name
     child_x = child_str[0:1]
     child_y = child_str[2:3]
 
     boat_capacity = 5
 
-    dx = child_x - goal_x
-    dy = child_y - goal_y
+    dx = int(child_x) - int(goal_x)
+    dy = int(child_y) - int(goal_y)
     return (dx + dy) / boat_capacity
 
 
-class Node:
-    def __init__(self, States, priority):
-
-        state_str = States.situation
+class NodeWrapper:
+    def __init__(self, states, priority):
+        self.states = states  # Node
+        state_str = str(states.name)  # STR
         self.state_str = state_str
         self.priority = priority
 
@@ -72,7 +72,7 @@ def a_star(root, goal):
     #goal_node = Node(goal, -1)
     # Form a one-element queue consisting of a zero length path that contains only the root node.
     queue = PriorityQueue()
-    root_node = Node(root, 0)
+    root_node = NodeWrapper(root, 0)
     queue.insert(root_node)
 
     path = {}
@@ -80,44 +80,37 @@ def a_star(root, goal):
     path[root] = None
     path_weights[root] = 0
 
+    final_path = {}
+    final_weight = {}
+
     while not queue.empty():
-        n = queue.pop()
-        n_state = n.States
-        # print(n_state)
-        print(n)
-        #print("nstate str:", str(n_state.get_situation()))
-        print("goal state str:", str(goal.get_situation()))
+        n = queue.pop()  # n -> NodeWrapper
 
-        # SU ANKI STATE'LE GOAL STATE AYNIYSA DURMALI
+        for child in n.states.children:  # child -> AnyNode
+            new_weight = path_weights[n.states] + 1  # every level costs 1
+            if child not in path_weights:
+                path_weights[child] = new_weight
+                priority = new_weight + heuristic_func(goal, child)
+                child_node = NodeWrapper(child, priority)
+                queue.insert(child_node)
+                path[child] = n.states
 
-        # if str(n_state) == str(goal.get_situation()):
-        #     break
+        if str(n.state_str) == str(goal.get_situation()):
+            path[n.states] = n.states
+            final_path = path[n.states]
+            final_weight = path_weights[n.states]
+            break
 
-        # BURADAN SONRASI CALISIYOR AMA COK UZUN DONUYO DURMADIGI ICIN O YUZDEN COMMENTLI ESAS
-        # PROBLEM BURANIN USTUNDE
-
-        # for child in n_state.children:
-        #     new_weight = path_weights[n_state] + 1  # every level costs 1
-
-        #     if child not in path_weights:
-        #         path_weights[child] = new_weight
-        #         # print(path_weights)
-        #         priority = new_weight + heuristic_func(goal, child)
-        #         child_node = Node(child, priority)
-        #         print(child_node.state)
-        #         print(child_node.priority)
-        #         queue.insert(child_node)
-        #         path[child] = n_state
-
-    return path, path_weights
+    return final_path, final_weight
 
 
 def main():
     b = Builder(6, 6, 1)
     goal = States(0, 0, 0, [])
     root = b.build_tree()
-    # print(RenderTree(root))
-    a_star(root, goal)
+    #print(RenderTree(root))
+    path, path_weight = a_star(root, goal)
+    print("Shortest path: ", path, "\nPath Weight: ", path_weight)
 
 
 if __name__ == '__main__':
